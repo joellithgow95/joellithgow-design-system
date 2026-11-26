@@ -1,5 +1,6 @@
 # Push to main: check, build the example site and deploy it to ds.joellithgow.com
-# (wrangler.jsonc). npm publishing stays manual.
+# (wrangler.jsonc). The hostname itself is jlithgow-ops Terraform (terraform/workers.tf).
+# npm publishing stays manual.
 #
 # Repo secrets: CLOUDFLARE_API_TOKEN, CLOUDFLARE_ACCOUNT_ID (same account as joellithgow.com).
 name: Deploy example
