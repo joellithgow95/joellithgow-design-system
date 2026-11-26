@@ -1,0 +1,76 @@
+# Releases: commits drive versions, merging the release PR ships them.
+#
+# 1. Every push to main runs release-please. It reads the Conventional Commits
+#    since the last release and keeps one open "chore(main): release X.Y.Z" PR
+#    with the version bump and CHANGELOG.md. While <1.0, feat → minor and fix →
+#    patch; docs/chore/ci alone don't release.
+# 2. Merging that PR makes release-please tag vX.Y.Z and create the GitHub
+#    release; the publish job then puts it on npm.
+#
+# Publishing uses npm Trusted Publishing (OIDC), so there is no NPM_TOKEN.
+# One-time setting on npmjs.com → joellithgow-design-system → Settings →
+# Trusted Publisher: GitHub Actions, owner joellithgow95, repository
+# joellithgow-design-system, workflow release.yml, no environment.
+#
+# The release PR is opened with GITHUB_TOKEN, so it doesn't trigger ci.yml.
+# That's fine: it only touches package.json's version, the manifest and
+# CHANGELOG.md, and the publish job runs `npm ci` plus the full check (prepack:
+# build + WCAG contrast) before anything is uploaded, so a broken build never
+# reaches npm.
+#
+# Repo setting needed: Settings → Actions → General → "Allow GitHub Actions to
+# create and approve pull requests".
+
+name: Release
+
+on:
+  push:
+    branches: [main]
+
+# One release run at a time; never cancel one mid-publish.
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    outputs:
+      release_created: ${{ steps.release.outputs.release_created }}
+      tag_name: ${{ steps.release.outputs.tag_name }}
+    steps:
+      - id: release
+        uses: googleapis/release-please-action@v5
+        with:
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json
+
+  publish:
+    needs: release-please
+    if: needs.release-please.outputs.release_created == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write # OIDC for npm Trusted Publishing and provenance
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.release-please.outputs.tag_name }}
+
+      # Trusted publishing needs npm >= 11.5.1; Node 22 bundles npm 10.9.
+      # Node 24.22.3 bundles npm 11.19.1.
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.22.3
+          registry-url: https://registry.npmjs.org
+
+      - run: npm ci
+
+      # prepack runs `npm run check` (build + contrast) before the upload.
+      - run: npm publish --provenance --access public

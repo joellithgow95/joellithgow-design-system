@@ -65,3 +65,13 @@ npm run example:build  # check, then build the example to example/dist
 | `src/elements/` | Lit components, one file per tag |
 | `src/scheme.ts` | Light/dark preference helpers and the pre-paint snippet |
 | `example/` | Static showcase site; imports the package by name |
+
+## Releasing
+
+Releases are automated (`.github/workflows/release.yml`):
+
+1. Merge PRs with Conventional Commits. While below 1.0, `feat:` bumps the minor version and `fix:` the patch. `docs:`, `chore:` and `ci:` alone don't release.
+2. release-please keeps a "chore(main): release X.Y.Z" PR open with the version bump and `CHANGELOG.md`.
+3. Merging it tags the release, and CI publishes to npm through Trusted Publishing, with provenance.
+
+Never edit the version or `CHANGELOG.md` by hand, and never `npm publish` locally. To force a version, add a `Release-As: X.Y.Z` footer to a commit.
