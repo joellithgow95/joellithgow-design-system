@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>joellithgow design system</title>
+    <meta name="description" content="Tokens, CSS patterns and web components for Joel Lithgow's projects, in light and dark." />
+    <!-- Same as SCHEME_INIT_SCRIPT from the package: applies a stored light/dark choice before first paint. -->
+    <script>
+      try{var s=localStorage.getItem("jrl-scheme");if(s==="light"||s==="dark")document.documentElement.dataset.scheme=s}catch(e){}
+    </script>
+    <script type="module" src="./src/main.js"></script>
+  </head>
+  <body>
+    <header class="site-header jrl-container">
+      <a class="wordmark" href="./">jrl <span>design system</span></a>
+      <jrl-scheme-toggle></jrl-scheme-toggle>
+    </header>
+
+    <main class="jrl-container">
+      <section class="intro">
+        <span class="jrl-badge">v0.1 · draft</span>
+        <h1>One set of tokens, two schemes, any site.</h1>
+        <p class="lead">
+          DTCG tokens built to CSS <code>light-dark()</code>, base styles in <code>@layer jrl.*</code> so any site can
+          override them, and Lit web components for the parts that need behaviour. Everything below renders from the
+          published package.
+        </p>
+      </section>
+
+      <section>
+        <h2>Colour roles</h2>
+        <p class="note">Each role in light and dark, side by side. Components only use roles, never the palette.</p>
+        <div class="scheme-pair">
+          <div class="scheme" data-force="light"><h3>Light</h3><div class="swatches" data-swatches></div></div>
+          <div class="scheme" data-force="dark"><h3>Dark</h3><div class="swatches" data-swatches></div></div>
+        </div>
+      </section>
+
+      <section>
+        <h2>Contrast</h2>
+        <p class="note">
+          WCAG 2.1 AA for every semantic pair, checked at build time by <code>scripts/check-contrast.mjs</code>. Text
+          needs 4.5:1, borders and focus rings 3:1.
+        </p>
+        <div class="table-wrap">
+          <table class="contrast">
+            <thead><tr><th>Pair</th><th>Light</th><th>Dark</th><th>Needs</th></tr></thead>
+            <tbody data-contrast></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section>
+        <h2>Type</h2>
+        <div class="type-scale">
+          <p class="type-sample" style="font-family: var(--jrl-font-display); font-size: var(--jrl-heading-xl)">Fraunces display</p>
+          <p class="type-sample" style="font-size: var(--jrl-text-xl)">IBM Plex Sans for reading, at a comfortable measure.</p>
+          <p class="type-sample" style="font-family: var(--jrl-font-mono); font-size: var(--jrl-text-sm)">MONACO · CATALOG RAIL · 0123456789</p>
+        </div>
+      </section>
+
+      <section>
+        <h2>Buttons, badges, cards</h2>
+        <p class="note">Plain CSS classes on native elements. No JavaScript needed.</p>
+        <div class="row">
+          <button class="jrl-button" type="button">Primary</button>
+          <button class="jrl-button jrl-button--secondary" type="button">Secondary</button>
+          <button class="jrl-button jrl-button--ghost" type="button">Ghost</button>
+          <button class="jrl-button jrl-button--danger" type="button">Delete</button>
+          <button class="jrl-button" type="button" disabled>Disabled</button>
+        </div>
+        <div class="row">
+          <span class="jrl-badge">Coral</span>
+          <span class="jrl-badge jrl-badge--accent-2">Teal</span>
+          <span class="jrl-badge jrl-badge--accent-3">Yellow</span>
+        </div>
+        <div class="grid">
+          <article class="jrl-card">
+            <h3>A card</h3>
+            <p>Outlined surface, square corners and the hard offset shadow. In dark mode the shadow turns coral.</p>
+          </article>
+          <article class="jrl-card">
+            <h3>Another</h3>
+            <p><a href="#">Links use accent-text</a>, a darker coral that passes AA on the page.</p>
+          </article>
+        </div>
+      </section>
+
+      <section>
+        <h2>Web components</h2>
+        <div class="grid">
+          <jrl-panel heading="jrl-panel">
+            <button slot="actions" class="jrl-button jrl-button--ghost small" type="button">Action</button>
+            <p>Shadow DOM, themed entirely by inherited tokens. Ported from plotter-art's <code>pa-panel</code>.</p>
+          </jrl-panel>
+          <jrl-panel heading="jrl-scheme-toggle">
+            <p>Auto / light / dark. Stored in localStorage and applied before paint by an inline snippet.</p>
+            <p><jrl-scheme-toggle></jrl-scheme-toggle></p>
+          </jrl-panel>
+        </div>
+      </section>
+
+      <section>
+        <h2>Open decisions</h2>
+        <ul class="decisions">
+          <li><strong>Corner radius.</strong> <code>--jrl-radius-ui</code> is square (the current default theme); the old Astro primitives used 8px.</li>
+          <li><strong>Text on accents is ink, not white.</strong> White on coral was 2.8:1 and white on teal 1.9:1; ink passes at 6.8 and 9.8.</li>
+          <li><strong>The dark palette is a first pass.</strong> It's derived, not designed; the coral shadow is the main idea to keep or drop.</li>
+        </ul>
+      </section>
+    </main>
+  </body>
+</html>

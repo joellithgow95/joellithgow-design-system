@@ -1,0 +1,157 @@
+/* Showcase-only layout. Unlayered, so it beats the package's @layer jrl.* rules. */
+
+body {
+  padding-bottom: var(--jrl-space-4xl);
+}
+
+.site-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--jrl-space-md);
+  padding-block: var(--jrl-space-lg);
+  border-bottom: var(--jrl-border-thick) solid var(--jrl-color-border);
+}
+
+.wordmark {
+  color: var(--jrl-color-text);
+  font-family: var(--jrl-font-mono);
+  font-weight: var(--jrl-font-weight-bold);
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: var(--jrl-tracking-wide);
+}
+
+.wordmark span {
+  color: var(--jrl-color-text-muted);
+  font-weight: var(--jrl-font-weight-normal);
+}
+
+main > section {
+  margin-top: var(--jrl-space-3xl);
+}
+
+main > section > h2 {
+  margin-bottom: var(--jrl-space-sm);
+}
+
+.intro h1 {
+  max-width: 18ch;
+  margin-block: var(--jrl-space-md);
+}
+
+.lead {
+  max-width: 60ch;
+  font-size: var(--jrl-text-lg);
+}
+
+.note {
+  max-width: 65ch;
+  margin-bottom: var(--jrl-space-lg);
+  color: var(--jrl-color-text-muted);
+}
+
+.scheme-pair,
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+  gap: var(--jrl-space-lg);
+}
+
+/* color-scheme on a container makes light-dark() inside it pick that side. */
+.scheme[data-force="light"] {
+  color-scheme: light;
+}
+
+.scheme[data-force="dark"] {
+  color-scheme: dark;
+}
+
+.scheme {
+  padding: var(--jrl-space-lg);
+  border: var(--jrl-border-thick) solid var(--jrl-color-border);
+  background: var(--jrl-color-bg);
+  color: var(--jrl-color-text);
+}
+
+.scheme h3 {
+  margin-bottom: var(--jrl-space-md);
+  font-size: var(--jrl-text-lg);
+}
+
+.swatches {
+  display: grid;
+  gap: var(--jrl-space-xs);
+}
+
+.swatch {
+  display: grid;
+  grid-template-columns: 2rem 1fr auto;
+  align-items: center;
+  gap: var(--jrl-space-sm);
+  font-size: var(--jrl-text-sm);
+}
+
+.chip {
+  width: 2rem;
+  height: 1.5rem;
+  border: var(--jrl-border-thin) solid var(--jrl-color-border);
+}
+
+.hex {
+  color: var(--jrl-color-text-muted);
+  font-family: var(--jrl-font-mono);
+  font-size: var(--jrl-text-xs);
+}
+
+.table-wrap {
+  overflow-x: auto;
+}
+
+.contrast {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--jrl-text-sm);
+}
+
+.contrast th,
+.contrast td {
+  padding: var(--jrl-space-xs) var(--jrl-space-sm);
+  border-bottom: var(--jrl-border-thin) solid var(--jrl-color-border-subtle);
+  text-align: left;
+}
+
+.contrast td.pass,
+.contrast td.fail {
+  font-family: var(--jrl-font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.contrast td.fail {
+  color: var(--jrl-color-danger);
+  font-weight: var(--jrl-font-weight-bold);
+}
+
+.type-scale {
+  display: grid;
+  gap: var(--jrl-space-md);
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--jrl-space-md);
+  margin-bottom: var(--jrl-space-lg);
+}
+
+.jrl-button.small {
+  padding: 0 var(--jrl-space-sm);
+  font-size: var(--jrl-text-xs);
+}
+
+.decisions {
+  display: grid;
+  gap: var(--jrl-space-sm);
+  max-width: 70ch;
+  padding-left: var(--jrl-space-lg);
+}

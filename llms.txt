@@ -1,0 +1,34 @@
+# joellithgow-design-system
+
+> Joel Lithgow's design system: DTCG design tokens built to CSS custom properties with light-dark(), layered base CSS, and Lit web components. Framework-agnostic; works in Astro, Vite, React 19 or plain HTML.
+
+Install: `npm install joellithgow-design-system`.
+
+## Rules for agents
+
+- Use semantic tokens (`--jrl-color-*`, `--jrl-space-*`, `--jrl-text-*`, `--jrl-heading-*`, `--jrl-radius-ui`, `--jrl-shadow-*`). Never hard-code a colour, and never use `--jrl-palette-*` outside the token file.
+- Light/dark is automatic: every colour role is a `light-dark()` value. Don't write `@media (prefers-color-scheme)` rules; set `color-scheme` on an element to force a side for its subtree.
+- Accent fills (`--jrl-color-accent`, `-accent-2`, `-accent-3`) take `--jrl-color-on-accent` text and always keep a `--jrl-color-border` outline. Accent as text uses `--jrl-color-accent-text`.
+- Buttons, cards and badges are CSS classes on native elements (`.jrl-button`, `.jrl-button--secondary|--ghost|--danger`, `.jrl-card`, `.jrl-badge`, `.jrl-badge--accent-2|--accent-3`, `.jrl-container`). Don't wrap them in custom elements.
+- Package CSS sits in `@layer jrl.tokens, jrl.reset, jrl.base`. Override from unlayered CSS; never use `!important`.
+- In a Vite or Astro build, set `build.cssTarget` to `["chrome123", "firefox120", "safari17.5"]`. Older targets make LightningCSS rewrite `light-dark()` into fallbacks that break element-level `color-scheme`.
+- Run `npm run check` after changing tokens: it rebuilds and fails if any semantic pair drops below WCAG 2.1 AA.
+
+## Entry points
+
+- `joellithgow-design-system/index.css`: tokens and base CSS in one import.
+- `joellithgow-design-system/tokens.css`, `/base.css`: the two halves separately.
+- `joellithgow-design-system`: registers every element and exports the scheme helpers.
+- `joellithgow-design-system/elements/<tag>.js`: one element at a time.
+- `joellithgow-design-system/scheme.js`: `SCHEME_INIT_SCRIPT` (inline it in `<head>` to avoid a flash), `getScheme()`, `setScheme()`.
+
+## Machine-readable references
+
+- [custom-elements.json](dist/custom-elements.json): Custom Elements Manifest with every tag, attribute, slot, CSS part, CSS property and event.
+- [tokens.json](dist/tokens.json): DTCG 2025.10 source. Dark values are in `$extensions["com.joellithgow.modes"].dark`.
+- [tokens.resolved.json](dist/tokens.resolved.json): every token's CSS name and final light and dark value.
+
+## Elements
+
+- `<jrl-panel heading="…">`: outlined panel with a heading bar. Slots: default body, `actions`. Parts: `header`, `body`.
+- `<jrl-scheme-toggle>`: Auto/Light/Dark switch. Stores the choice in localStorage under `jrl-scheme` and fires `jrl-scheme-change` on window.

@@ -1,0 +1,230 @@
+/*
+  base.css: reset, page defaults and the CSS-only patterns (buttons, cards,
+  badges). Works with no JavaScript; the web components are extras on top.
+
+  Everything sits in @layer jrl.*, so any unlayered rule in a consuming site
+  wins without specificity tricks. Import tokens.css first (or use index.css).
+
+  Light/dark: tokens use light-dark(), which follows color-scheme. :root
+  defaults to "light dark" (the visitor's OS setting); data-scheme on <html>
+  forces one. The pre-paint snippet in scheme.js sets it from localStorage.
+*/
+
+@layer jrl.tokens, jrl.reset, jrl.base;
+
+@layer jrl.reset {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  * {
+    margin: 0;
+  }
+
+  img,
+  picture,
+  video,
+  canvas,
+  svg {
+    display: block;
+    max-width: 100%;
+  }
+
+  input,
+  button,
+  textarea,
+  select {
+    font: inherit;
+  }
+
+  p,
+  h1,
+  h2,
+  h3,
+  h4 {
+    overflow-wrap: break-word;
+  }
+}
+
+@layer jrl.base {
+  :root[data-scheme="light"] {
+    color-scheme: light;
+  }
+
+  :root[data-scheme="dark"] {
+    color-scheme: dark;
+  }
+
+  @media (max-width: 768px) {
+    :root {
+      --jrl-gutter: var(--jrl-space-lg);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    :root {
+      --jrl-duration-fast: 0ms;
+      --jrl-duration-base: 0ms;
+      --jrl-duration-slow: 0ms;
+    }
+  }
+
+  body {
+    background: var(--jrl-color-bg);
+    color: var(--jrl-color-text);
+    font-family: var(--jrl-font-body);
+    font-size: var(--jrl-text-base);
+    line-height: var(--jrl-leading-normal);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--jrl-font-display);
+    font-weight: var(--jrl-font-weight-semibold);
+    line-height: var(--jrl-leading-tight);
+    letter-spacing: var(--jrl-tracking-tight);
+    text-wrap: balance;
+  }
+
+  h1 {
+    font-size: var(--jrl-heading-xl);
+  }
+
+  h2 {
+    font-size: var(--jrl-heading-lg);
+  }
+
+  h3 {
+    font-size: var(--jrl-heading-md);
+  }
+
+  h4 {
+    font-size: var(--jrl-heading-sm);
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  code,
+  kbd,
+  pre {
+    font-family: var(--jrl-font-mono);
+    font-size: 0.9em;
+  }
+
+  a {
+    color: var(--jrl-color-accent-text);
+    text-underline-offset: 0.2em;
+  }
+
+  :focus-visible {
+    outline: var(--jrl-border-base) solid var(--jrl-color-focus);
+    outline-offset: 2px;
+  }
+
+  /* Buttons: style a native <button> or <a> with these classes. Accent fills
+     always keep the ink border; scripts/check-contrast.mjs relies on it. */
+  .jrl-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--jrl-space-sm);
+    padding: var(--jrl-space-sm) var(--jrl-space-lg);
+    border: var(--jrl-border-thick) solid var(--jrl-color-border);
+    border-radius: var(--jrl-radius-ui);
+    background: var(--jrl-color-accent);
+    color: var(--jrl-color-on-accent);
+    font-weight: var(--jrl-font-weight-semibold);
+    text-decoration: none;
+    cursor: pointer;
+    box-shadow: var(--jrl-shadow-sm);
+    transition:
+      transform var(--jrl-duration-fast) var(--jrl-ease-out),
+      box-shadow var(--jrl-duration-fast) var(--jrl-ease-out);
+  }
+
+  .jrl-button:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: var(--jrl-shadow-md);
+  }
+
+  .jrl-button:active {
+    transform: none;
+    box-shadow: none;
+  }
+
+  .jrl-button:disabled,
+  .jrl-button[aria-disabled="true"] {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+
+  .jrl-button--secondary {
+    background: var(--jrl-color-surface);
+    color: var(--jrl-color-text);
+  }
+
+  .jrl-button--ghost {
+    background: transparent;
+    color: var(--jrl-color-text);
+    border-color: transparent;
+    box-shadow: none;
+  }
+
+  .jrl-button--ghost:hover {
+    border-color: var(--jrl-color-border);
+  }
+
+  .jrl-button--danger {
+    background: var(--jrl-color-surface);
+    color: var(--jrl-color-danger);
+    border-color: var(--jrl-color-danger);
+  }
+
+  /* Card: an outlined surface with the offset shadow. */
+  .jrl-card {
+    padding: var(--jrl-space-xl);
+    border: var(--jrl-border-thick) solid var(--jrl-color-border);
+    border-radius: var(--jrl-radius-ui);
+    background: var(--jrl-color-surface);
+    box-shadow: var(--jrl-shadow-md);
+  }
+
+  /* Badge: a small label. --accent-2/--accent-3 swap the fill. */
+  .jrl-badge {
+    display: inline-block;
+    padding: var(--jrl-space-xs) var(--jrl-space-sm);
+    border: var(--jrl-border-base) solid var(--jrl-color-border);
+    border-radius: var(--jrl-radius-ui);
+    background: var(--jrl-color-accent);
+    color: var(--jrl-color-on-accent);
+    font-family: var(--jrl-font-mono);
+    font-size: var(--jrl-text-xs);
+    letter-spacing: var(--jrl-tracking-wide);
+    text-transform: uppercase;
+  }
+
+  .jrl-badge--accent-2 {
+    background: var(--jrl-color-accent-2);
+  }
+
+  .jrl-badge--accent-3 {
+    background: var(--jrl-color-accent-3);
+  }
+
+  /* Page container with the standard gutter. */
+  .jrl-container {
+    width: 100%;
+    max-width: var(--jrl-content-container);
+    margin-inline: auto;
+    padding-inline: var(--jrl-gutter);
+  }
+}

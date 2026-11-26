@@ -1,0 +1,66 @@
+{
+  "name": "joellithgow-design-system",
+  "version": "0.1.0",
+  "description": "Joel Lithgow's design system: DTCG tokens, layered CSS and Lit web components, light and dark.",
+  "license": "MIT",
+  "author": "Joel Lithgow",
+  "type": "module",
+  "files": [
+    "dist",
+    "llms.txt"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./elements/*.js": {
+      "types": "./dist/elements/*.d.ts",
+      "default": "./dist/elements/*.js"
+    },
+    "./scheme.js": {
+      "types": "./dist/scheme.d.ts",
+      "default": "./dist/scheme.js"
+    },
+    "./index.css": "./dist/index.css",
+    "./tokens.css": "./dist/tokens.css",
+    "./base.css": "./dist/base.css",
+    "./tokens.json": "./dist/tokens.json",
+    "./custom-elements.json": "./dist/custom-elements.json",
+    "./package.json": "./package.json",
+    "./tokens.resolved.json": "./dist/tokens.resolved.json",
+    "./contrast.json": "./dist/contrast.json"
+  },
+  "customElements": "dist/custom-elements.json",
+  "sideEffects": [
+    "./dist/index.js",
+    "./dist/elements/*.js",
+    "*.css"
+  ],
+  "workspaces": [
+    "example"
+  ],
+  "scripts": {
+    "build": "npm run build:tokens && npm run build:css && npm run build:ts && npm run build:manifest",
+    "build:tokens": "node scripts/build-tokens.mjs",
+    "build:css": "cp src/css/*.css dist/",
+    "build:ts": "tsc -p tsconfig.json",
+    "build:manifest": "cem analyze --litelement --globs 'src/elements/*.ts' --outdir dist",
+    "check": "npm run build && node scripts/check-contrast.mjs",
+    "example:dev": "npm run check && npm run dev -w example",
+    "example:build": "npm run check && npm run build -w example",
+    "prepack": "npm run check"
+  },
+  "dependencies": {
+    "lit": "^3.3.3"
+  },
+  "devDependencies": {
+    "@custom-elements-manifest/analyzer": "^0.11.0",
+    "typescript": "^5.9.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/joellithgow95/joellithgow-design-system.git"
+  },
+  "homepage": "https://ds.joellithgow.com"
+}

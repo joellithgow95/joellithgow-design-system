@@ -1,0 +1,14 @@
+// ds.joellithgow.com: the example site on Cloudflare Workers static assets, same
+// setup as joellithgow.com (no Worker script). Deployed by .github/workflows/deploy.yml.
+// Cloudflare creates the proxied DNS record for the custom domain itself.
+{
+  "$schema": "https://unpkg.com/wrangler@4.151.1/config-schema.json",
+  "name": "joellithgow-design-system",
+  "compatibility_date": "2026-10-01",
+  "assets": {
+    "directory": "./example/dist"
+  },
+  "routes": [{ "pattern": "ds.joellithgow.com", "custom_domain": true }],
+  "workers_dev": false,
+  "preview_urls": false
+}
