@@ -1,6 +1,9 @@
-// ds.joellithgow.com: the example site on Cloudflare Workers static assets, same
-// setup as joellithgow.com (no Worker script). Deployed by .github/workflows/deploy.yml.
-// Cloudflare creates the proxied DNS record for the custom domain itself.
+// The example site on Cloudflare Workers static assets (no Worker script).
+// Deployed by .github/workflows/deploy.yml.
+//
+// No `routes` here on purpose: the ds.joellithgow.com custom domain is owned by
+// jlithgow-ops (terraform/workers.tf), so wrangler only uploads code and never
+// touches the hostname. Don't add routes back.
 {
   "$schema": "https://unpkg.com/wrangler@4.151.1/config-schema.json",
   "name": "joellithgow-design-system",
@@ -8,7 +11,6 @@
   "assets": {
     "directory": "./example/dist"
   },
-  "routes": [{ "pattern": "ds.joellithgow.com", "custom_domain": true }],
   "workers_dev": false,
   "preview_urls": false
 }

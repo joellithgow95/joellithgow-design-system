@@ -16,4 +16,4 @@ Read `README.md` for layout and commands, and `llms.txt` for the rules that cons
 
 ## Hosting the example
 
-`example/` deploys to https://ds.joellithgow.com (Cloudflare Workers static assets, `wrangler.jsonc`) on every push to `main`. Don't deploy it, publish to npm, or push without Joel's go-ahead.
+`example/` deploys on every push to `main` (Cloudflare Workers static assets, `wrangler.jsonc`). The `ds.joellithgow.com` hostname is Terraform in jlithgow-ops (`terraform/workers.tf`), not wrangler; keep `routes` out of `wrangler.jsonc`. Don't deploy it, publish to npm, or push without Joel's go-ahead.
