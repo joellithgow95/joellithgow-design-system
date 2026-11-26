@@ -1,6 +1,6 @@
 {
   "name": "joellithgow-design-system",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Joel Lithgow's design system: DTCG tokens, layered CSS and Lit web components, light and dark.",
   "license": "MIT",
   "author": "Joel Lithgow",
