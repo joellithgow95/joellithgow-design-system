@@ -14,6 +14,10 @@ Read `README.md` for layout and commands, and `llms.txt` for the rules that cons
 - Prefer CSS classes on native elements when no behaviour is needed. Prefer native platform features (popover, `<dialog>`, `:state()`, `light-dark()`) over JavaScript.
 - Package CSS stays inside `@layer jrl.*`. Example-site CSS stays unlayered.
 
+## Releases
+
+Commits drive versions: write Conventional Commits, and let release-please open the release PR. Don't hand-edit `version` in `package.json`, `.release-please-manifest.json` or `CHANGELOG.md`, and never run `npm publish` locally; CI publishes when Joel merges the release PR.
+
 ## Hosting the example
 
 `example/` deploys on every push to `main` (Cloudflare Workers static assets, `wrangler.jsonc`). The `ds.joellithgow.com` hostname is Terraform in jlithgow-ops (`terraform/workers.tf`), not wrangler; keep `routes` out of `wrangler.jsonc`. Don't deploy it, publish to npm, or push without Joel's go-ahead.
